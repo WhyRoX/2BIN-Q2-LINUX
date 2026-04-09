@@ -58,17 +58,14 @@ int main(int argc, char **argv)
     if (end) break;
     checkNeg(newsockfd, "ERROR accept");
 
-    ssize_t ret = sread(newsockfd, request, sizeof(request));
-    if (end)
-    {
-      sclose(newsockfd);
-      break;
-    }
+    int ret = sread(newsockfd, request, sizeof(request));
     checkCond(ret <= 0, "ERROR READ");
-
-    size_t endPos = (ret < (ssize_t) sizeof(request)) ? (size_t) ret : MAX_MSG;
-    request[endPos] = '\0';
-    size_t messageLength = strlen(request);
+    
+    if (ret >= (int)sizeof(request)) {
+      ret = sizeof(request) - 1;
+    }
+    request[ret] = '\0';
+    int messageLength = strlen(request);
     printf("Message reçu : %s\n", request);
 
     snprintf(response, sizeof(response), "ACK %zu %s", messageLength, getTime());
