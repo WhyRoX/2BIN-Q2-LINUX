@@ -47,7 +47,7 @@ int main(int argc, char **argv)
   nwrite(sockfd, message, sizeof(message));
 
   char response[MAX_MSG + 1] = {0};
-  ssize_t readRet = sread(sockfd, response, sizeof(response));
+  int readRet = sread(sockfd, response, sizeof(response));
   checkCond(readRet <= 0, "ERROR READ");
   response[MAX_MSG] = '\0';
 

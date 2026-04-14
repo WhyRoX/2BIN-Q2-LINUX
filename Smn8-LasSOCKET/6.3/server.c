@@ -65,7 +65,17 @@ int main(int argc, char **argv)
       ret = sizeof(request) - 1;
     }
     request[ret] = '\0';
-    int messageLength = strlen(request);
+
+    if (strcmp(request, "SHUTDOWN!") == 0)
+    {
+      end = 1;
+      sclose(newsockfd);
+      sclose(sockfd);
+      break;
+    }
+    
+
+    ssize_t messageLength = strlen(request);
     printf("Message reçu : %s\n", request);
 
     snprintf(response, sizeof(response), "ACK %zu %s", messageLength, getTime());
